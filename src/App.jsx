@@ -19,6 +19,7 @@ class App extends React.Component {
 
     this.movieRemove = this.movieRemove.bind(this) //привязка контекста класу до функції movieRemove
     console.log('constructor')
+    console.log('App: ', this)
     // console.log(API_key, `\n${API_url}`)
   }
 
@@ -107,11 +108,13 @@ class App extends React.Component {
       // console.log(localWillMovies);
       return movieObj.filter(fetchMovie => {
         let tempLocalWillMovie = {};
+        
         for (let item of localWillMovies) {
           if (fetchMovie.id === item.id) {
             tempLocalWillMovie = item;
             break;
           }
+          
         }
         return fetchMovie.id !== tempLocalWillMovie.id;
       })
@@ -146,7 +149,7 @@ class App extends React.Component {
       // console.log('did update: fetch');
     }
   }
-
+  
   render() {    
     // console.log('render: ',this.state.sortBy);
     console.log('App render');
