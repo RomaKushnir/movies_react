@@ -4,6 +4,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MovieItem from './MovieItem';
 import MovieTabs from './MovieTabs.jsx'
+import Pagination from './Pagination.jsx';
 import {API_key, API_url} from './apiMovieDB.js';
 
 class App extends React.Component { 
@@ -12,15 +13,78 @@ class App extends React.Component {
 
     this.state = {      
       // movies: moviesData,
-      movies: [],
-      willWatchList: [],
-      sortBy: 'myWillWatchList'
+      // movies: [],
+      // willWatchList: [],
+      movies: JSON.parse(localStorage.getItem('movies')) || [],      
+      willWatchList: JSON.parse(localStorage.getItem('movies')) || [],            
+      sortBy: 'myWillWatchList', 
+      currentPage: 1
     }
 
     this.movieRemove = this.movieRemove.bind(this) //привязка контекста класу до функції movieRemove
     console.log('constructor')
-    console.log('App: ', this)
+    // console.log('App: ', this)
     // console.log(API_key, `\n${API_url}`)
+  }
+
+  componentDidMount() {
+    console.log('App did mount: fetch');
+    // this.setState({
+    //   movies: JSON.parse(localStorage.getItem('movies')) || [],      
+    //   willWatchList: JSON.parse(localStorage.getItem('movies')) || [],      
+    // });
+    // this.getMovies();
+  }
+
+  // shouldComponentUpdate(prevProps, prevState) {
+  //   console.log('should update', prevProps, prevState)
+  //   if (prevState === this.state) {
+  //     return false
+  //   }
+  //   return true;
+  // }
+
+  componentDidUpdate(prevProps, prevState) {
+    // console.log('App did update: ');
+    console.log('App did update: ','prevState: ', prevState,'\ncurrentState: ', this.state);
+    
+    if (prevState.sortBy !== this.state.sortBy) {
+      this.getMovies();
+      // console.log('did update: fetch');
+    }
+  }  
+
+  getMovies() {
+    if (this.state.sortBy !== 'myWillWatchList') {         
+      fetch(`${API_url}/discover/movie?api_key=${API_key}&sort_by=${this.state.sortBy}&language=ru`)
+      .then(res => {
+        // console.log(res);
+        return res.json();
+      })
+      .then(data => {
+        // console.log(data)
+        this.setState({
+          movies: data.results,
+          totalPages: data.total_pages
+        });
+        // this.gotMovies = data.results;
+        // console.log(this.gotMovies)
+      });
+    }
+  }
+  
+  paginationClick = pageNum => {
+    // console.log(this.state.currentPage);
+    if (this.state.currentPage > 0 && this.state.currentPage < this.state.totalPages) {
+      fetch(`${API_url}/discover/movie?api_key=${API_key}&sort_by=${this.state.sortBy}&page=${pageNum || 1}&language=ru`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          movies: data.results,
+          currentPage: pageNum
+        })
+      });
+    }
   }
 
   movieRemove(clickEl) {
@@ -66,28 +130,12 @@ class App extends React.Component {
     localStorage.setItem('movies', JSON.stringify(newWillWatchList));
   }
 
-  getMovies() {
-    if (this.state.sortBy !== 'myWillWatchList') {   
-      fetch(`${API_url}/discover/movie?api_key=${API_key}&sort_by=${this.state.sortBy}&language=ru`)
-      .then(res => {
-        // console.log(res);
-        return res.json();
-      })
-      .then(data => {
-        // console.log(data)
-        this.setState({
-          movies: data.results
-        });
-        // this.gotMovies = data.results;
-        // console.log(this.gotMovies)
-      });
-    }
-  }
 
   sortTabSwitch = sort_by => {
     if (sort_by !== 'myWillWatchList') {
       this.setState({
-        sortBy: sort_by
+        sortBy: sort_by,
+        currentPage: 1
       });
     } else {
       this.setState({
@@ -120,33 +168,6 @@ class App extends React.Component {
       })
     } else {
       return localWillMovies;
-    }
-  }
-  
-  componentDidMount() {
-    console.log('App did mount: fetch');
-    this.setState({
-      movies: JSON.parse(localStorage.getItem('movies')) || [],      
-      willWatchList: JSON.parse(localStorage.getItem('movies')) || [],      
-    });
-    // this.getMovies();
-  }
-
-  // shouldComponentUpdate(prevProps, prevState) {
-  //   console.log('should update', prevProps, prevState)
-  //   if (prevState === this.state) {
-  //     return false
-  //   }
-  //   return true;
-  // }
-
-  componentDidUpdate(prevProps, prevState) {
-    // console.log('did update: ', this.state.sortBy);
-    console.log('App did update: ','prevState: ', prevState,'\ncurrentState: ', this.state);
-    
-    if (prevState.sortBy !== this.state.sortBy) {
-      this.getMovies();
-      // console.log('did update: fetch');
     }
   }
   
@@ -205,9 +226,14 @@ class App extends React.Component {
               will watch
             </button>
             <p className="text-center font-weight-bold">{`Will watch: ${String(this.state.willWatchList.length)}`}</p>
-            {/* JSON.parse(localStorage.getItem('movies')).length ||  */}
           </div>
         </div>
+        {this.state.sortBy !== 'myWillWatchList' ? 
+          <Pagination sortBy={this.state.sortBy} 
+            paginationClick={this.paginationClick} 
+            currentPage={this.state.currentPage}
+            totalPages={this.state.totalPages}/>
+          : null}
       </div>
     )
   }

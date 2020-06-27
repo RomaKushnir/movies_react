@@ -3,13 +3,13 @@ import React from 'react';
 class MovieTabs extends React.Component {
 
 	componentWillReceiveProps() {
-		console.log('MovieTabs will receive')
+		// console.log('MovieTabs will receive')
 	}
 	
 	shouldComponentUpdate(nextProps, nextState) {		
-		console.log('MovieTabs should update');
-		console.log('next props: ', nextProps.sortKey)
-		console.log('this props: ', this.props.sortKey)
+		// console.log('MovieTabs should update');
+		// console.log('next props: ', nextProps.sortKey)
+		// console.log('this props: ', this.props.sortKey)
 		if (nextProps.sortKey !== this.props.sortKey ) {
 			return true;
 		} else {
@@ -18,7 +18,7 @@ class MovieTabs extends React.Component {
 	}
 
 	render() {
-		console.log('MovieTabs render')
+		// console.log('MovieTabs render')
 		const {sortKey, sortTabSwitch} = this.props;
 
 		const clickHandle = value => {
