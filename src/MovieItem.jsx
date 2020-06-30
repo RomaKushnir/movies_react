@@ -5,14 +5,18 @@ class MovieItem extends React.Component {
 		super(props);
 
 		this.state = {
-			//перевірка чи є даний елемент в локал сторедж для відображення статусу кнопки
-			// addWillWatch: JSON.parse(localStorage.getItem('movies')).some((el) => el.id === this.props.id)
-			addWillWatch: this.checkIfAdded()
-			// addWillWatch: false
+			addWillWatch: false
 		}
-
 	}
-
+	
+	//зміна статусу кнопки для добавлених карточок фільма в локалсторедж
+	componentDidMount() {
+		this.setState({
+			addWillWatch: this.checkIfAdded()
+		});
+	}
+	
+	//перевірка чи є даний елемент в локал сторедж для відображення статусу кнопки
 	checkIfAdded(){
 		return JSON.parse(localStorage.getItem('movies')).some((el) => el.id === this.props.id)
 	}
@@ -58,7 +62,7 @@ class MovieItem extends React.Component {
 
 	render() {
 		const {movie, sortKey} = this.props;
-		console.log('movieItem', this.props)		
+		// console.log('movieItem', this.props)		
 		return (
 			<div className="movie-card">
 				<img 

@@ -1,4 +1,6 @@
 import React from 'react';
+// import {Input} from '@material-ui/core';
+import {Input} from 'react-input-component';
 
 class Pagination extends React.Component {
   // constructor() {
@@ -19,6 +21,12 @@ class Pagination extends React.Component {
     }
   }
 
+  paginationCustomPage(val, keyCode) {   
+    if (keyCode === 13 && val > 0 && this.props.totalPages >= val) {
+      this.props.paginationClick(val);          
+    }
+  }
+
   render() {
     // console.log('pagination props', this.props)
     const {paginationClick, currentPage, totalPages} = this.props;
@@ -29,8 +37,13 @@ class Pagination extends React.Component {
         <button type="button" 
           onClick={() => this.paginationPrev(currentPage)}
         >prev</button>
-        <button type="button" 
-          disabled className="active">{currentPage}</button>
+        <Input id="pagination-input-page"
+          value={currentPage}          
+          onKeyDown={(event) => this.paginationCustomPage(event.target.value, event.keyCode)}
+        />
+        {/* <button type="button" 
+          disabled className="active">{currentPage}
+        </button> */}
         <button type="button" 
           onClick={() => this.paginationNext(currentPage)}
         >next</button>

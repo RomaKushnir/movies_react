@@ -32,7 +32,9 @@
     ]
   },
   "devDependencies": {
+    "@material-ui/core": "^4.10.2",
     "bootstrap": "^4.4.1",
-    "jquery": "^3.5.1"
+    "jquery": "^3.5.1",
+    "react-input-component": "^0.2.0"
   }
 }
