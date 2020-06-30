@@ -15,6 +15,7 @@ class Pagination extends React.Component {
   paginationNext(currentPage) {
     if (currentPage < this.props.totalPages) {
       this.props.paginationClick(currentPage + 1);
+      // console.log('next',currentPage)
     }
   }
 
@@ -31,10 +32,10 @@ class Pagination extends React.Component {
         <button type="button" 
           disabled className="active">{currentPage}</button>
         <button type="button" 
-          onClick={() => this.paginationNext(currentPage)}>
-        next</button>
+          onClick={() => this.paginationNext(currentPage)}
+        >next</button>
         <button type="button" 
-          onClick= {() => paginationClick(totalPages-1)}>{`last ${totalPages-1}`}</button>
+          onClick= {() => paginationClick(totalPages)}>{`last ${totalPages}`}</button>
       </div>
     );
   }  

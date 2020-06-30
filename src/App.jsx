@@ -22,13 +22,13 @@ class App extends React.Component {
     }
 
     this.movieRemove = this.movieRemove.bind(this) //привязка контекста класу до функції movieRemove
-    console.log('constructor')
-    // console.log('App: ', this)
+    // console.log('constructor')
+    console.log('App: ', this)
     // console.log(API_key, `\n${API_url}`)
   }
 
   componentDidMount() {
-    console.log('App did mount: fetch');
+    // console.log('App did mount: fetch');
     // this.setState({
     //   movies: JSON.parse(localStorage.getItem('movies')) || [],      
     //   willWatchList: JSON.parse(localStorage.getItem('movies')) || [],      
@@ -46,7 +46,7 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     // console.log('App did update: ');
-    console.log('App did update: ','prevState: ', prevState,'\ncurrentState: ', this.state);
+    // console.log('App did update: ','prevState: ', prevState,'\ncurrentState: ', this.state);
     
     if (prevState.sortBy !== this.state.sortBy) {
       this.getMovies();
@@ -75,7 +75,7 @@ class App extends React.Component {
   
   paginationClick = pageNum => {
     // console.log(this.state.currentPage);
-    if (this.state.currentPage > 0 && this.state.currentPage < this.state.totalPages) {
+    // if (this.state.currentPage > 0 && this.state.currentPage <= this.state.totalPages) {
       fetch(`${API_url}/discover/movie?api_key=${API_key}&sort_by=${this.state.sortBy}&page=${pageNum || 1}&language=ru`)
       .then(res => res.json())
       .then(data => {
@@ -84,9 +84,32 @@ class App extends React.Component {
           currentPage: pageNum
         })
       });
-    }
+    // }
   }
-
+  
+  willWatch = addMovie => {
+    let newWillWatchList = [...this.state.willWatchList];
+    
+    let isInWillWatch = this.state.willWatchList.some((el) => {
+      return el === addMovie;
+    });
+    
+    if(!isInWillWatch) {
+      newWillWatchList.push(addMovie);
+    } 
+    else {
+      newWillWatchList = this.state.willWatchList.filter(el => {
+        return el !== addMovie;
+      });
+    }
+    
+    this.setState({
+      willWatchList: newWillWatchList
+    });
+    
+    localStorage.setItem('movies', JSON.stringify(newWillWatchList));
+  }
+  
   movieRemove(clickEl) {
     let updatedMovies = this.state.movies.filter(el => {
       return el.id !== clickEl;
@@ -108,29 +131,6 @@ class App extends React.Component {
     });
   }
 
-  willWatch = addMovie => {
-    let newWillWatchList = [...this.state.willWatchList];
-
-    let isInWillWatch = this.state.willWatchList.some((el) => {
-      return el === addMovie;
-    });
-    
-    if(!isInWillWatch) {
-      newWillWatchList.push(addMovie);
-    } else {
-      newWillWatchList = this.state.willWatchList.filter(el => {
-        return el !== addMovie;
-      });
-    }
-
-    this.setState({
-      willWatchList: newWillWatchList
-    });
-
-    localStorage.setItem('movies', JSON.stringify(newWillWatchList));
-  }
-
-
   sortTabSwitch = sort_by => {
     if (sort_by !== 'myWillWatchList') {
       this.setState({
@@ -148,7 +148,7 @@ class App extends React.Component {
     // console.log(this.state.sortBy);
   }
 
-  
+  //функція фільтрації доданих MovieItem у will watch в API reguest фільтрах,   
   movieShowFilter(movieObj) {
     let localWillMovies = JSON.parse(localStorage.getItem('movies'));
 
@@ -173,7 +173,8 @@ class App extends React.Component {
   
   render() {    
     // console.log('render: ',this.state.sortBy);
-    console.log('App render');
+    console.log('App render');    
+    
     return (
       <div className="container">
         <div className="row">
@@ -185,7 +186,7 @@ class App extends React.Component {
             <div className="movie-list">
                 <div className="container">
                   <div className="row">
-                    {/* {this.state.movies.map(movie => {
+                    {this.state.movies.map(movie => {
                         return (
                           <div className="col-md-6" key={movie.id}>
                             <MovieItem 
@@ -193,12 +194,15 @@ class App extends React.Component {
                               movieRemove={this.movieRemove} 
                               willWatch={this.willWatch} 
                               key={movie.id}
+                              id={movie.id}
                               sortKey={this.state.sortBy}
                             />
                           </div>
                         )
                       }
-                    )} */}
+                    )}
+                    {/*філтрація добавлених карточок, викидання з списків вкладок якщо наявні в локал сторедж*/}
+                    {/*
                     {this.movieShowFilter(this.state.movies).map(movie => {
                       return (
                         <div className="col-md-6" key={movie.id}>
@@ -212,6 +216,7 @@ class App extends React.Component {
                         </div>
                       )
                     })}
+                  */}
                   </div>
                 </div>
               </div>
@@ -225,7 +230,7 @@ class App extends React.Component {
               }>
               will watch
             </button>
-            <p className="text-center font-weight-bold">{`Will watch: ${String(this.state.willWatchList.length)}`}</p>
+            <p className="will-watch-info text-center font-weight-bold">{`Will watch: ${String(this.state.willWatchList.length)}`}</p>
           </div>
         </div>
         {this.state.sortBy !== 'myWillWatchList' ? 

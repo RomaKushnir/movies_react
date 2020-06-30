@@ -1,12 +1,20 @@
 import React from 'react'
 
 class MovieItem extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.state = {
-			addWillWatch: false
+			//перевірка чи є даний елемент в локал сторедж для відображення статусу кнопки
+			// addWillWatch: JSON.parse(localStorage.getItem('movies')).some((el) => el.id === this.props.id)
+			addWillWatch: this.checkIfAdded()
+			// addWillWatch: false
 		}
+
+	}
+
+	checkIfAdded(){
+		return JSON.parse(localStorage.getItem('movies')).some((el) => el.id === this.props.id)
 	}
 	
 	willWatchLocal = (movie) => {
@@ -17,10 +25,10 @@ class MovieItem extends React.Component {
     this.props.willWatch(movie);
 	}
 
-	buttonsTerminate(key) {
+	buttonActionTerminate(sortKey) {
 		let {movie} = this.props;
 
-		if (key === 'myWillWatchList') {
+		if (sortKey === 'myWillWatchList') {
 			return (
 				<button 
 						type="button" 
@@ -49,8 +57,8 @@ class MovieItem extends React.Component {
 	// }
 
 	render() {
-		let {movie} = this.props;
-		// console.log(this.props)
+		const {movie, sortKey} = this.props;
+		console.log('movieItem', this.props)		
 		return (
 			<div className="movie-card">
 				<img 
@@ -64,7 +72,7 @@ class MovieItem extends React.Component {
 					style={{'maxHeight': '100px'}}
 				>{movie.overview}</p>
 				<div className="d-flex justify-content-end">
-					{this.buttonsTerminate(this.props.sortKey)}
+					{this.buttonActionTerminate(sortKey)}
 					{/* <button 
 						type="button" 
 						className="btn btn-danger"
