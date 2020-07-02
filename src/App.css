@@ -28,6 +28,10 @@ button {
   background-color: white;
 }
 
+.card-title {
+  min-height: 47px;
+}
+
 .card-overview {
   height: 75px;
   transition: .5s;

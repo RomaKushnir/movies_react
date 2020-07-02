@@ -34,7 +34,7 @@ class MovieTabs extends React.Component {
 
 		return (
 			<div className="movie-tabs p-3">
-				<div className="row">
+				<div className="row justify-content-around">
 					<button  
 						className={`${getClassBySortKey('popularity.desc')} col-4 m-1`}
 						onClick={clickHandle('popularity.desc')}>
