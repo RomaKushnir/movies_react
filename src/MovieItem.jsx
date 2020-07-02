@@ -1,12 +1,16 @@
 import React from 'react'
+// import expandArrow from './expand-more.svg'
 
 class MovieItem extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			addWillWatch: false
+			addWillWatch: false, 
+			showText: false
 		}
+
+		this.showText = this.showText.bind(this)
 	}
 	
 	//зміна статусу кнопки для добавлених карточок фільма в локалсторедж
@@ -15,6 +19,12 @@ class MovieItem extends React.Component {
 			addWillWatch: this.checkIfAdded()
 		});
 	}
+
+	
+	// componentWillUnmount() {
+	// 	console.log('will unmount')
+	// }
+
 	
 	//перевірка чи є даний елемент в локал сторедж для відображення статусу кнопки
 	checkIfAdded(){
@@ -27,6 +37,13 @@ class MovieItem extends React.Component {
     });
     
     this.props.willWatch(movie);
+	}
+
+	showText() {
+		// console.log(this)
+		this.setState({
+			showText: !this.state.showText			
+		});
 	}
 
 	buttonActionTerminate(sortKey) {
@@ -56,15 +73,11 @@ class MovieItem extends React.Component {
 		}
 	}
 
-	// componentWillUnmount() {
-	// 	console.log('will unmount')
-	// }
-
 	render() {
 		const {movie, sortKey} = this.props;
 		// console.log('movieItem', this.props)		
 		return (
-			<div className="movie-card">
+			<div className={`movie-card ${this.state.showText ? 'text-overflow' : ''}`}>
 				<img 
 					className="card-img" 
 					src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
@@ -72,10 +85,16 @@ class MovieItem extends React.Component {
 				/>
 				<p className="card-title">{movie.title}</p>
 				<p className="card-rating">{`Рейтинг: ${movie.vote_average}`}</p>
-				<p  className="card-overview overflow-hidden" 
-					style={{'maxHeight': '100px'}}
-				>{movie.overview}</p>
-				<div className="d-flex justify-content-end">
+				<p  className={`card-overview ${this.state.showText ? 'show' : 'overflow-hidden'}`}>
+					{movie.overview}</p>
+				<div className="d-flex justify-content-between align-items-center">
+					{/* <img src={expandArrow}/> */}
+					<button
+						className={`expand-text-btn ${this.state.showText ? "active" : ""}`} 
+						type="button"					
+						onClick={this.showText}
+					>						
+					</button>
 					{this.buttonActionTerminate(sortKey)}
 					{/* <button 
 						type="button" 

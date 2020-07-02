@@ -7,11 +7,53 @@ button {
   cursor: pointer;
 }
 
-.movie-card {
+.movie-item-wrap {
+  position: relative;
+  min-height: 70vh;
+}
+
+.movie-card {  
   padding: 10px;
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 5px;
+}
+
+.movie-card.text-overflow {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  top: 0;
+  z-index: 1;
+  background-color: white;
+}
+
+.card-overview {
+  height: 75px;
+  transition: .5s;
+}
+
+.card-overview.show {
+  height: auto;
+}
+
+.expand-text-btn {
+  border: none;
+  background-image: url('./expand-more.svg');
+  background-color: transparent;
+  background-repeat: no-repeat;
+  height: 10px;
+  width: 18px;
+  margin-left: 10px;
+  transition: 0.2s;
+}
+
+button.expand-text-btn:focus {
+  outline: none;
+}
+
+.expand-text-btn.active {
+  transform: rotate(180deg);
 }
 
 .pagination-block {
@@ -28,11 +70,6 @@ button {
   padding: 10px 20px;
   margin: 0 10px;
 }
-
-/* .pagination-block button.active {
-  background-color: darkslategray;
-  pointer-events: none;
-} */
 
 #pagination-input-page {  
   border-radius: 5px;

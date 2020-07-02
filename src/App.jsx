@@ -188,7 +188,7 @@ class App extends React.Component {
                   <div className="row">
                     {this.state.movies.map(movie => {
                         return (
-                          <div className="col-md-6" key={movie.id}>
+                          <div className="movie-item-wrap col-md-6" key={movie.id}>
                             <MovieItem 
                               movie={movie} 
                               movieRemove={this.movieRemove} 

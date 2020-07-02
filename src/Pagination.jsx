@@ -21,7 +21,7 @@ class Pagination extends React.Component {
     }
   }
 
-  paginationCustomPage(val, keyCode) {   
+  paginationCustomPage(val, keyCode) {
     if (keyCode === 13 && val > 0 && this.props.totalPages >= val) {
       this.props.paginationClick(val);          
     }
@@ -32,22 +32,23 @@ class Pagination extends React.Component {
     const {paginationClick, currentPage, totalPages} = this.props;
     return (
       <div className="pagination-block p-5 row">
-        <button type="button" 
+        <button 
+          type="button" 
           onClick={() => paginationClick(1)}>first</button>
-        <button type="button" 
+        <button 
+          type="button" 
           onClick={() => this.paginationPrev(currentPage)}
         >prev</button>
         <Input id="pagination-input-page"
           value={currentPage}          
-          onKeyDown={(event) => this.paginationCustomPage(event.target.value, event.keyCode)}
-        />
-        {/* <button type="button" 
-          disabled className="active">{currentPage}
-        </button> */}
-        <button type="button" 
+          onKeyDown={event => this.paginationCustomPage(event.target.value, event.keyCode)}
+        />        
+        <button 
+          type="button" 
           onClick={() => this.paginationNext(currentPage)}
         >next</button>
-        <button type="button" 
+        <button 
+          type="button" 
           onClick= {() => paginationClick(totalPages)}>{`last ${totalPages}`}</button>
       </div>
     );
