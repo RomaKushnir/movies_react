@@ -9,14 +9,14 @@ class Pagination extends React.Component {
 
   paginationPrev(currentPage) {
     if (currentPage > 1) {
-      this.props.paginationClick(currentPage - 1);
+      this.props.paginationClick(+currentPage - 1);
       console.log('prev',currentPage)
     }
   }
 
   paginationNext(currentPage) {
     if (currentPage < this.props.totalPages) {
-      this.props.paginationClick(currentPage + 1);
+      this.props.paginationClick(+currentPage + 1);
       // console.log('next',currentPage)
     }
   }
@@ -39,8 +39,8 @@ class Pagination extends React.Component {
           type="button" 
           onClick={() => this.paginationPrev(currentPage)}
         >prev</button>
-        <Input id="pagination-input-page"
-          value={currentPage}          
+        <Input id="pagination-input-page"          
+          value={currentPage}
           onKeyDown={event => this.paginationCustomPage(event.target.value, event.keyCode)}
         />        
         <button 

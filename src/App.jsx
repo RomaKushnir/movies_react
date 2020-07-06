@@ -2,6 +2,7 @@ import React from 'react';
 // import {moviesData} from './moviesData.js';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+// import MovieItem from './MovieItem';
 import MovieItem from './MovieItem';
 import MovieTabs from './MovieTabs.jsx'
 import Pagination from './Pagination.jsx';
@@ -147,29 +148,6 @@ class App extends React.Component {
     // this.getMovies();
     // console.log(this.state.sortBy);
   }
-
-  //функція фільтрації доданих MovieItem у will watch в API reguest фільтрах,   
-  movieShowFilter(movieObj) {
-    let localWillMovies = JSON.parse(localStorage.getItem('movies'));
-
-    if (this.state.sortBy !== "myWillWatchList") {
-      // console.log(localWillMovies);
-      return movieObj.filter(fetchMovie => {
-        let tempLocalWillMovie = {};
-        
-        for (let item of localWillMovies) {
-          if (fetchMovie.id === item.id) {
-            tempLocalWillMovie = item;
-            break;
-          }
-          
-        }
-        return fetchMovie.id !== tempLocalWillMovie.id;
-      })
-    } else {
-      return localWillMovies;
-    }
-  }
   
   render() {    
     // console.log('render: ',this.state.sortBy);
@@ -192,31 +170,13 @@ class App extends React.Component {
                             <MovieItem 
                               movie={movie} 
                               movieRemove={this.movieRemove} 
-                              willWatch={this.willWatch} 
-                              key={movie.id}
-                              id={movie.id}
+                              willWatch={this.willWatch}                               
                               sortKey={this.state.sortBy}
                             />
                           </div>
                         )
                       }
                     )}
-                    {/*філтрація добавлених карточок, викидання з списків вкладок якщо наявні в локал сторедж*/}
-                    {/*
-                    {this.movieShowFilter(this.state.movies).map(movie => {
-                      return (
-                        <div className="col-md-6" key={movie.id}>
-                          <MovieItem 
-                            movie={movie} 
-                            movieRemove={this.movieRemove} 
-                            willWatch={this.willWatch} 
-                            key={movie.id}
-                            sortKey={this.state.sortBy}
-                          />
-                        </div>
-                      )
-                    })}
-                  */}
                   </div>
                 </div>
               </div>
