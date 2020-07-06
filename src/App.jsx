@@ -18,7 +18,7 @@ class App extends React.Component {
       // willWatchList: [],
       movies: JSON.parse(localStorage.getItem('movies')) || [],      
       willWatchList: JSON.parse(localStorage.getItem('movies')) || [],            
-      sortBy: 'popularity.desc', 
+      sortBy: 'myWillWatchList', 
       currentPage: 1
     }
 
@@ -29,12 +29,13 @@ class App extends React.Component {
   }
 
   componentDidMount() {    
+    JSON.parse(localStorage.getItem('movies')) || localStorage.setItem('movies', JSON.stringify([]));
     // console.log('App did mount: fetch');
     // this.setState({
     //   movies: JSON.parse(localStorage.getItem('movies')) || [],      
     //   willWatchList: JSON.parse(localStorage.getItem('movies')) || [],      
     // });
-    this.getMovies();
+    // this.getMovies();
   }
 
   // shouldComponentUpdate(prevProps, prevState) {
