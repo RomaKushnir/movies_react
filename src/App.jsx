@@ -18,7 +18,7 @@ class App extends React.Component {
       // willWatchList: [],
       movies: JSON.parse(localStorage.getItem('movies')) || [],      
       willWatchList: JSON.parse(localStorage.getItem('movies')) || [],            
-      sortBy: 'myWillWatchList', 
+      sortBy: 'popularity.desc', 
       currentPage: 1
     }
 
@@ -28,7 +28,7 @@ class App extends React.Component {
     // console.log(API_key, `\n${API_url}`)
   }
 
-  componentDidMount() {
+  componentDidMount() {    
     // console.log('App did mount: fetch');
     // this.setState({
     //   movies: JSON.parse(localStorage.getItem('movies')) || [],      
