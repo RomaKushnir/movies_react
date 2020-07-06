@@ -34,7 +34,7 @@ class App extends React.Component {
     //   movies: JSON.parse(localStorage.getItem('movies')) || [],      
     //   willWatchList: JSON.parse(localStorage.getItem('movies')) || [],      
     // });
-    // this.getMovies();
+    this.getMovies();
   }
 
   // shouldComponentUpdate(prevProps, prevState) {
