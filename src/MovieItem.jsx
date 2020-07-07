@@ -122,7 +122,7 @@ function useAddWillWatch() {
 	const [addWillWatch, setAddWillWatch] = useState(false);
 	
 	function toWillWatchCheck(movie)  {
-		console.log(JSON.parse(localStorage.getItem('movies')))
+		// console.log(JSON.parse(localStorage.getItem('movies')))
 		return JSON.parse(localStorage.getItem('movies')).some((el) => {
 			return el.id === movie.id;
 		});

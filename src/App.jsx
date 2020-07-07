@@ -18,7 +18,7 @@ class App extends React.Component {
       // willWatchList: [],
       movies: JSON.parse(localStorage.getItem('movies')) || [],      
       willWatchList: JSON.parse(localStorage.getItem('movies')) || [],            
-      sortBy: 'myWillWatchList', 
+      sortBy: 'popularity.desc', 
       currentPage: 1
     }
 
@@ -35,7 +35,7 @@ class App extends React.Component {
     //   movies: JSON.parse(localStorage.getItem('movies')) || [],      
     //   willWatchList: JSON.parse(localStorage.getItem('movies')) || [],      
     // });
-    // this.getMovies();
+    this.getMovies();
   }
 
   // shouldComponentUpdate(prevProps, prevState) {
@@ -164,7 +164,9 @@ class App extends React.Component {
             />
             <div className="movie-list">
                 <div className="container">
-                  <div className="row">
+                  {this.state.sortBy === 'myWillWatchList' && JSON.parse(localStorage.getItem('movies')).length === 0 ? 
+                  (<p className="text-if-empty">не додано жодного фільма</p>) :
+                  (<div className="row">
                     {this.state.movies.map(movie => {
                         return (
                           <div className="movie-item-wrap col-md-6 col-lg-4" key={movie.id}>
@@ -178,7 +180,7 @@ class App extends React.Component {
                         )
                       }
                     )}
-                  </div>
+                  </div>)}
                 </div>
               </div>
           </div>
@@ -189,7 +191,7 @@ class App extends React.Component {
                 this.sortTabSwitch('myWillWatchList');
               }
               }>
-              will watch
+              I will watch
             </button>
             <p className="will-watch-info text-center font-weight-bold">{`Will watch: ${String(this.state.willWatchList.length)}`}</p>
           </div>

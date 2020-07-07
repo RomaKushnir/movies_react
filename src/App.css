@@ -84,3 +84,10 @@ button.expand-text-btn:focus {
   max-width: 100px;
   color: white;
 }
+
+.text-if-empty {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  padding-top: 30px;
+}
